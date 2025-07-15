@@ -5,11 +5,16 @@ const boardRoutes = require('./routes/boardRoutes');
 const snapshotRoutes = require('./routes/snapshotRoutes');
 const historyRoutes = require('./routes/historyRoutes');
 const voiceRoutes = require('./routes/voiceRoutes');
-import whiteboardRoutes from './routes/whiteboardRoutes.js';
+const whiteboardRoutes = require('./routes/whiteboardRoutes');
+const cors  = require("cors")
 
 const app = express();
 require('dotenv').config();
 
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST'],
+  }));
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/boards', boardRoutes);

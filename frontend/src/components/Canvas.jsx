@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useBoardStore } from "../store/boardStore";
 import { useCursorStore } from "../store/cursorStore";
+import { useAuthStore } from "../store/authStore";
 
 const Canvas = ({ socket, boardId, userId }) => {
   const canvasRef = useRef(null);
@@ -8,6 +9,7 @@ const Canvas = ({ socket, boardId, userId }) => {
   const currentPath = useRef([]);
   const { color, width, paths, addPath } = useBoardStore();
   const { updateCursor } = useCursorStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const canvas = canvasRef.current;

@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [boards, setBoards] = useState([]);
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const { token, user, logout } = useAuthStore();
   const navigate = useNavigate();
 
   const fetchBoards = async () => {
-    const res = await fetch('http://localhost:5000/api/boards', {
+    const res = await fetch('http://localhost:5000/api/whiteboard', {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -17,13 +17,13 @@ const Dashboard = () => {
   };
 
   const createBoard = async () => {
-    const res = await fetch('http://localhost:5000/api/boards', {
+    const res = await fetch('http://localhost:5000/api/whiteboard', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ title }),
     });
     const board = await res.json();
     setBoards((prev) => [...prev, board]);
@@ -47,8 +47,8 @@ const Dashboard = () => {
         <input
           type="text"
           placeholder="New Board Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           className="border p-2"
         />
         <button onClick={createBoard} className="bg-green-500 text-white px-4 py-2 rounded">Create Board</button>
@@ -57,7 +57,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {boards.map((b) => (
           <div key={b._id} className="bg-white p-4 shadow rounded-lg">
-            <h2 className="font-semibold">{b.name}</h2>
+            <h2 className="font-semibold">{b.title}</h2>
             <button onClick={() => openBoard(b._id)} className="mt-2 text-blue-600 underline">Open</button>
           </div>
         ))}

@@ -1,9 +1,13 @@
-import express from 'express';
-import { saveWhiteboard, loadWhiteboard } from '../controllers/whiteboardController.js';
+const express = require('express');
+const { protect } = require('../middlewares/authMiddleware');
+const { saveWhiteboard, loadWhiteboard,createBoard,getBoards,deleteBoard } = require('../controllers/whiteboardController');
 
 const router = express.Router();
 
-router.post('/save', saveWhiteboard);
-router.get('/load/:boardId', loadWhiteboard);
+router.post('/save', protect, saveWhiteboard);
+router.get('/load/:boardId', protect, loadWhiteboard);
+router.post('/', protect, createBoard);
+router.get('/', protect, getBoards);
+router.delete('/:id', protect, deleteBoard);
 
-export default router;
+module.exports = router;

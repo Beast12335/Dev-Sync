@@ -15,7 +15,7 @@ const Register = () => {
   };
 
   const handleRegister = async () => {
-    const res = await fetch('http://localhost:5000/api/auth/register', {
+    const res = await fetch('http://localhost:5000/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
@@ -66,7 +66,7 @@ const Register = () => {
 
       <p className="text-sm">
         Already have an account?{" "}
-        <a href="/login" className="text-blue-500 underline">Login</a>
+        <a href="/" className="text-blue-500 underline">Login</a>
       </p>
     </div>
   );

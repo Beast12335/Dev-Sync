@@ -9,6 +9,7 @@ export const useBoardStore = create((set, get) => ({
 
   setColor: (color) => set({ color }),
   setWidth: (width) => set({ width }),
+  setPaths: (newPaths) => set({ paths: newPaths, history: newPaths, redoStack: [] }),
 
   addPath: (path) => {
     const { paths, history } = get();
@@ -45,4 +46,5 @@ export const useBoardStore = create((set, get) => ({
   clear: () => {
     set({ paths: [], history: [], redoStack: [] });
   }
+  
 }));

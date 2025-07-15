@@ -6,7 +6,14 @@ const boardSchema = new mongoose.Schema({
   collaborators: [{
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     role: { type: String, enum: ['owner', 'editor', 'viewer'], default: 'editor' },
-  }],  
+  }],
+  paths: [
+    {
+      path: [{ x: Number, y: Number }],
+      color: String,
+      width: Number,
+    },
+  ],
   createdAt: { type: Date, default: Date.now },
 });
 
