@@ -5,6 +5,7 @@ const boardRoutes = require('./routes/boardRoutes');
 const snapshotRoutes = require('./routes/snapshotRoutes');
 const historyRoutes = require('./routes/historyRoutes');
 const voiceRoutes = require('./routes/voiceRoutes');
+import whiteboardRoutes from './routes/whiteboardRoutes.js';
 
 const app = express();
 require('dotenv').config();
@@ -15,5 +16,6 @@ app.use('/api/boards', boardRoutes);
 app.use('/api/snapshots', snapshotRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/voice', voiceRoutes);
+app.use('/api/whiteboard', whiteboardRoutes);
 
 module.exports = app;

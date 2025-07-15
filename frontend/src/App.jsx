@@ -1,13 +1,21 @@
-import { useState } from 'react'
-import Whiteboard from './pages/Whiteboard'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Whiteboard from './pages/Whiteboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-
   return (
-    <>
-    <Whiteboard/>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/board/:id" element={<ProtectedRoute><Whiteboard /></ProtectedRoute>} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

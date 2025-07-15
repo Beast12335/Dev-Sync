@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { useBoardStore } from "../store/boardStore";
+import { useCursorStore } from "../store/cursorStore";
 
 const Canvas = ({ socket, boardId, userId }) => {
   const canvasRef = useRef(null);
   const isDrawing = useRef(false);
   const currentPath = useRef([]);
   const { color, width, paths, addPath } = useBoardStore();
+  const { updateCursor } = useCursorStore();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -52,6 +54,15 @@ const Canvas = ({ socket, boardId, userId }) => {
     ctx.beginPath();
     ctx.moveTo(currentPath.current[0].x, currentPath.current[0].y);
     currentPath.current.forEach((p) => ctx.lineTo(p.x, p.y));
+    socket.current.emit('cursor-move', {
+      boardId,
+      user,
+      cursor: {
+        x: e.clientX,
+        y: e.clientY,
+      },
+    });
+
     ctx.stroke();
   };
 

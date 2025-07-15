@@ -2,6 +2,7 @@ module.exports = (socket, io) => {
     // Join room
     socket.on('join-board', ({ boardId, user }) => {
         socket.join(boardId);
+        socket.data.user = user; // Store user info in socket data
         socket.to(boardId).emit('user-joined', { user, socketId: socket.id });
     });
 
@@ -24,8 +25,8 @@ module.exports = (socket, io) => {
         socket.to(boardId).emit('drawing', data);
     });
 
-    socket.on('cursor-move', ({ boardId, userId, x, y }) => {
-        socket.to(boardId).emit('cursor-move', { userId, x, y });
+    socket.on('cursor-move', ({ boardId, user,cursor }) => {
+        socket.to(boardId).emit('cursor-move', { user,cursor });
     });
 };
 
