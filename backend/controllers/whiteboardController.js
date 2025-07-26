@@ -1,5 +1,5 @@
 const Whiteboard = require('../models/Board');
-
+const User = require('../models/User');
 
 exports.createBoard = async (req, res) => {
   const board = await Whiteboard.create({
@@ -59,3 +59,27 @@ exports.loadWhiteboard = async (req, res) => {
     res.status(500).json({ error: 'Error loading board.' });
   }
 };
+
+exports.addCollaborator = async (req, res) => {
+  const { user, role, boardId } = req.body;
+  console.log(req.body)
+  try {
+    const userRecord = await User.findOne({ email: user });
+    if (!userRecord) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+    const board = await Whiteboard.findById(boardId);
+    if (!board) {
+      return res.status(404).json({ error: 'Board not found.' });
+    }
+    if (board.collaborators.some(c => c.userId.toString() === userRecord._id.toString())) {
+      return res.status(400).json({ error: 'User already a collaborator.' });
+    }
+    board.collaborators.push({ userId: userRecord._id, role });
+    await board.save(); 
+    res.json({ success: true, board });
+  } catch (err) {
+    res.status(500).json({ error: 'Error adding collaborator.',message: err.message });
+    console.log(err.message)
+  }
+}

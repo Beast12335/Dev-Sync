@@ -9,7 +9,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const fetchBoards = async () => {
-    const res = await fetch('http://localhost:5000/api/whiteboard', {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/whiteboard`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -17,7 +17,7 @@ const Dashboard = () => {
   };
 
   const createBoard = async () => {
-    const res = await fetch('http://localhost:5000/api/whiteboard', {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/whiteboard`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

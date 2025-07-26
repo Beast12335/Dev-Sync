@@ -27,6 +27,7 @@ exports.transcribeVoice = async (req, res) => {
 
     res.status(201).json(note);
   } catch (err) {
+    console.error('Transcription error:', err.message);
     res.status(500).json({ error: 'Transcription failed', details: err.message });
   }
 };

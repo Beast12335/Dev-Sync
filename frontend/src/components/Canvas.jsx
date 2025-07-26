@@ -89,6 +89,9 @@ const Canvas = ({ socket, boardId, userId }) => {
     currentPath.current = [];
   };
 
+
+  
+
   return (
     <canvas
       ref={canvasRef}

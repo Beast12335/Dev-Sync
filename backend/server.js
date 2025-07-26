@@ -4,11 +4,12 @@ const app = require('./app');
 const mongoose = require('mongoose');
 const socketHandler = require('./sockets');
 
+require('dotenv').config();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173', 
-    methods: ['GET', 'POST'],
+    origin: `${process.env.FRONTEND}`, 
+    methods: ['GET', 'POST','PUT', 'DELETE'],
   },
 });
 

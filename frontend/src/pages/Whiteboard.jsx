@@ -4,9 +4,11 @@ import { useParams } from "react-router-dom";
 import Canvas, { clearCanvas } from "../components/Canvas";
 import Toolbar from "../components/ToolBar";
 import RemoteCursors from "../components/RemoteCursors";
+import VoiceRecorder from "../components/VoiceRecorder";
 import { useSocket } from "../hooks/useSocket";
 import { useAuthStore } from "../store/authStore";
 import { useBoardStore } from "../store/boardStore";
+import { useCursorStore } from "../store/cursorStore";
 
 const Whiteboard = () => {
   const { id: boardId } = useParams();
@@ -21,7 +23,7 @@ const Whiteboard = () => {
   useEffect(() => {
     const fetchBoard = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/whiteboard/load/${boardId}`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND}/api/whiteboard/load/${boardId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -44,7 +46,7 @@ const Whiteboard = () => {
     const timeout = setTimeout(() => {
       if (!paths || paths.length === 0) return;
 
-      fetch("http://localhost:5000/api/whiteboard/save", {
+      fetch(`${import.meta.env.VITE_BACKEND}/api/whiteboard/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,13 +61,36 @@ const Whiteboard = () => {
     return () => clearTimeout(timeout);
   }, [paths, boardId, token]);
 
+  const updateCursor = useCursorStore((state) => state.updateCursor);
+
+  useEffect(() => {
+    if (!socket || !user) return;
+
+    const handleCursorMove = ({ user: remoteUser, cursor }) => {
+      if (remoteUser.id !== user.id) {
+        updateCursor(remoteUser.id, {
+          ...cursor,
+          name: remoteUser.name,
+        });
+      }
+    };
+
+    socket.current.on("cursor-move", handleCursorMove);
+
+    return () => {
+      socket.current.off("cursor-move", handleCursorMove);
+    };
+  }, [socket, user, updateCursor]);
+
+
   if (!isConnected) return <div className="p-6 text-lg">🔌 Connecting...</div>;
 
   return (
     <div className="w-screen h-screen bg-gray-50 relative">
       <Canvas socket={socket} boardId={boardId} userId={user.id} />
-      <Toolbar onClear={clearCanvas} />
+      <Toolbar onClear={clearCanvas} boardId={boardId}/>
       <RemoteCursors />
+      <VoiceRecorder boardId={boardId} />
     </div>
   );
 };
