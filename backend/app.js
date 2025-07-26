@@ -14,8 +14,6 @@ app.use(cors({
   }));
 app.use(express.json());
 app.use('/api/auth', authRoutes);
-app.use('/api/snapshots', snapshotRoutes);
-app.use('/api/history', historyRoutes);
 app.use('/api/voice', voiceRoutes);
 app.use('/api/whiteboard', whiteboardRoutes);
 
